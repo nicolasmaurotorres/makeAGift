@@ -2,7 +2,10 @@ package inc.maro.makeagift2.Services;
 
 import android.os.Binder;
 
+import java.util.ArrayList;
+
 import inc.maro.makeagift2.Activities.GiftActivity;
+import inc.maro.makeagift2.Activities.LobbyActivity;
 import inc.maro.makeagift2.Containers.Gift;
 
 
@@ -20,9 +23,11 @@ public class BehaviourCallBackBinder extends Binder implements ICallBackBinder {
         this.service = pepe;
     }
 
+
     @Override
-    public void arrangeFloatingActions() {
-        //todo tirarle la pelota de organizar al servicio
+    public void getAllGifts(Gift thisNot)
+    {
+        this.service.getAllGifts(thisNot);
     }
 
     @Override
@@ -53,5 +58,10 @@ public class BehaviourCallBackBinder extends Binder implements ICallBackBinder {
     public void updateTarget(long idGift, int idTarget)
     {
         this.service.updateIdTargetGift(idGift, idTarget);
+    }
+
+    @Override
+    public void drawAllGifts(ArrayList<Gift> notThisOnes, LobbyActivity activity) {
+
     }
 }

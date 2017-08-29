@@ -1,6 +1,9 @@
 package inc.maro.makeagift2.Services;
 
+import java.util.ArrayList;
+
 import inc.maro.makeagift2.Activities.GiftActivity;
+import inc.maro.makeagift2.Activities.LobbyActivity;
 import inc.maro.makeagift2.Containers.Gift;
 
 
@@ -11,10 +14,11 @@ import inc.maro.makeagift2.Containers.Gift;
 public interface ICallBackBinder {
 
     //que acciones lleva a cabo
-    void arrangeFloatingActions();
+    void getAllGifts(Gift thisNot);
     void fillTargetNames(GiftActivity activity);
     void createNewGift(String target, String description, String date, String where, GiftActivity activity);
     void updateGift(Gift modifiedGift);
     void createNewTarget(Gift possibleGift, GiftActivity activity);
     void updateTarget(long idGift, int idTarget);
+    void drawAllGifts(ArrayList<Gift> notThisOnes, LobbyActivity activity);
 }

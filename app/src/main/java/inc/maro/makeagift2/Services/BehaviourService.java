@@ -3,11 +3,13 @@ package inc.maro.makeagift2.Services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.provider.ContactsContract;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import inc.maro.makeagift2.Activities.GiftActivity;
+import inc.maro.makeagift2.Activities.LobbyActivity;
 import inc.maro.makeagift2.Containers.Gift;
 import inc.maro.makeagift2.Helpers.DatabaseHelper;
 
@@ -66,5 +68,10 @@ public class BehaviourService extends Service {
     public void updateIdTargetGift(long idGift, int idTarget)
     {
         DatabaseHelper.getInstance(this).updateIdTargetGift(idGift,idTarget);
+    }
+
+    public void getAllGifts(Gift thisNot, LobbyActivity activity)
+    {
+        activity.drawGiftsCallBack(DatabaseHelper.getInstance(this).getAllGift(thisNot));
     }
 }

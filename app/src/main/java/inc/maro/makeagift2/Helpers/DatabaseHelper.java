@@ -205,7 +205,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // READ Gifts
     // devuelve una lista de todos los gifts en la base de datos
-    public ArrayList<Gift> getAllGift()
+    public ArrayList<Gift> getAllGift(Gift thisNot)
     {
         ArrayList<Gift> toReturn = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();

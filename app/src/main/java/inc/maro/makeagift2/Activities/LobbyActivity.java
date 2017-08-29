@@ -27,7 +27,7 @@ public class LobbyActivity extends AppCompatActivity implements Serviceable
 {
     private BehaviourServiceConnector behaviourServerServiceConnector = new BehaviourServiceConnector(LobbyActivity.this);
     private ICallBackBinder service = null;
-    private static ArrayList<Gift> gifts = new ArrayList<>();
+    private ArrayList<Gift> gifts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,6 +48,7 @@ public class LobbyActivity extends AppCompatActivity implements Serviceable
             FloatingActionButton fab  = (FloatingActionButton) inflater.inflate(R.layout.fab_button,contentLobby, false);
             fab.setOnTouchListener(new FabOnTouchListenerListener(LobbyActivity.this,possibleGift));
             contentLobby.addView(fab); // lo agrego al ViewGroup que lo contiene
+            gifts.add(possibleGift);
         }
 
         //checkeo si cambio algun regalo que se edito
@@ -55,6 +56,7 @@ public class LobbyActivity extends AppCompatActivity implements Serviceable
         {
             Gift editedGift = (Gift) getIntent().getExtras().get(Gift.EDITED_GIFT);
             gifts.get(gifts.indexOf(editedGift)).updateData(editedGift);
+            gifts.add(editedGift);
         }
         fab2.setOnTouchListener(new FabOnTouchListenerListener(this,null));
     }
@@ -63,7 +65,7 @@ public class LobbyActivity extends AppCompatActivity implements Serviceable
     public void setCallBackBinder(ICallBackBinder serv)
     {
         this.service = serv;
-        service.arrangeFloatingActions();
+        service.drawAllGifts(gifts,this);
     }
 
     @Override
@@ -101,5 +103,10 @@ public class LobbyActivity extends AppCompatActivity implements Serviceable
         {
             Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void drawGiftsCallBack(ArrayList<Gift> allGift)
+    {
+            
     }
 }
