@@ -23,13 +23,6 @@ public class BehaviourCallBackBinder extends Binder implements ICallBackBinder {
         this.service = pepe;
     }
 
-
-    @Override
-    public void getAllGifts(Gift thisNot)
-    {
-        this.service.getAllGifts(thisNot);
-    }
-
     @Override
     public void fillTargetNames(GiftActivity activity)
     {
@@ -61,7 +54,19 @@ public class BehaviourCallBackBinder extends Binder implements ICallBackBinder {
     }
 
     @Override
-    public void drawAllGifts(ArrayList<Gift> notThisOnes, LobbyActivity activity) {
+    public void drawAllGifts(ArrayList<Gift> notThisOnes, LobbyActivity activity)
+    {
+        this.service.drawAllGifts(notThisOnes,activity);
+    }
 
+    @Override
+    public void clearTables()
+    {
+        this.service.clearTables();
+    }
+
+    @Override
+    public void updateGiftPositions(ArrayList<Gift> gifts) {
+        this.service.updateGiftPositions(gifts);
     }
 }

@@ -38,23 +38,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static boolean WIPE_DATABASE = true;
 
 
-    private DatabaseHelper(Context context)
-    {
+    private DatabaseHelper(Context context){
         super(context, DatabaseHelper.DATABASE_NAME, null, DATABASE_VERSION);
-
-            //context.deleteDatabase(DATABASE_NAME);
-
-
     }
 
     public static synchronized DatabaseHelper getInstance(Context cont) {
-        if (sInstance == null)
-        {
-          //  if (WIPE_DATABASE == true)
-            //    cont.deleteDatabase(DATABASE_NAME);
-            //else WIPE_DATABASE = false;
+        if (sInstance == null){
             sInstance = new DatabaseHelper(cont);
-
         }
         return sInstance;
     }
@@ -62,8 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Called when the database connection is being configured.
     // Configure database settings for things like foreign key support, write-ahead logging, etc.
     @Override
-    public void onConfigure(SQLiteDatabase db)
-    {
+    public void onConfigure(SQLiteDatabase db){
         super.onConfigure(db);
         db.setForeignKeyConstraintsEnabled(true);
     }
@@ -71,15 +60,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Called when the database is created for the FIRST time.
     // If a database already exists on disk with the same DATABASE_NAME, this method will NOT be called.
     @Override
-    public void onCreate(SQLiteDatabase db)
-    {
+    public void onCreate(SQLiteDatabase db){
         db.execSQL(CREATE_TABLE_GIFT);
         db.execSQL(CREATE_TABLE_TARGETS);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1)
-    {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1){
         int databaseNewVersion = DATABASE_VERSION + 1;
         Log.w("UPDATE DATABASE",
                 "Upgrading database from version " + DATABASE_VERSION + " to "
@@ -95,8 +82,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // CRUD OPERATIONS
     // CREATE Target
     // Crea una nueva instancia en la tabla de Target y devuelve el id del auto increment
-    public long createTarget(String targetName)
-    {
+    public long createTarget(String targetName){
         long toReturn = -1;
         // Create and/or open the database for writing
         SQLiteDatabase db = getWritableDatabase();
@@ -121,8 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // CREATE Gift
-    public long createGift(String target, String description, String date, String where)
-    {
+    public long createGift(String target, String description, String date, String where){
         long toReturn = -1;
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
@@ -137,6 +122,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             values.put("description", description);
             values.put("coorMap", where);
             values.put("date", date);
+            values.put("x",Gift.DEFAULT_PERCENTAGE_X);
+            values.put("y",Gift.DEFAULT_POSITION_Y);
+
             toReturn = db.insertOrThrow(GIFT_TABLE_NAME, null, values);
             db.setTransactionSuccessful();
         } catch (Exception e) {
@@ -205,42 +193,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // READ Gifts
     // devuelve una lista de todos los gifts en la base de datos
-    public ArrayList<Gift> getAllGift(Gift thisNot)
+    public ArrayList<Gift> getAllGift(ArrayList<Gift> thisNot)
     {
         ArrayList<Gift> toReturn = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         String TARGETS_INSTANCES_QUERY = String.format("SELECT id,idName,description,date,coorMap,x,y FROM %s", GIFT_TABLE_NAME);
         Cursor cursor = db.rawQuery(TARGETS_INSTANCES_QUERY, null);
+        cursor.moveToFirst();
         try {
-            if (cursor.moveToFirst()) {
-                do {
-                    Gift giftAux = new Gift();
-                    giftAux.setId(cursor.getInt(cursor.getColumnIndex("id")));
-                    giftAux.setDescription(cursor.getString(cursor.getColumnIndex("description")));
-                    giftAux.setWhenToGift(cursor.getString(cursor.getColumnIndex("date")));
-                    giftAux.setIdTarget(cursor.getInt(cursor.getColumnIndex("idName")));
-                    giftAux.setTarget(getNameById(giftAux.getIdTarget()));
-                    giftAux.setWhereToBuy(cursor.getString(cursor.getColumnIndex("coorMap")));
-                    toReturn.add(giftAux);
-                }
-                while (cursor.moveToNext());
-            }
+
+             do {
+                 Gift giftAux = new Gift();
+                 giftAux.setId(cursor.getInt(cursor.getColumnIndex("id")));
+                 if (!thisNot.contains(giftAux)){
+                     giftAux.setId(cursor.getInt(cursor.getColumnIndex("id")));
+                     giftAux.setDescription(cursor.getString(cursor.getColumnIndex("description")));
+                     giftAux.setWhenToGift(cursor.getString(cursor.getColumnIndex("date")));
+                     giftAux.setIdTarget(cursor.getInt(cursor.getColumnIndex("idName")));
+                     giftAux.setTarget(getNameById(giftAux.getIdTarget()));
+                     giftAux.setWhereToBuy(cursor.getString(cursor.getColumnIndex("coorMap")));
+                     giftAux.setX(cursor.getFloat(cursor.getColumnIndex("x")));
+                     giftAux.setY(cursor.getFloat(cursor.getColumnIndex("y")));
+                     toReturn.add(giftAux);
+                 }
+             }
+             while (cursor.moveToNext());
+
         } catch (Exception e) {
             Log.d(TAG, "Error al intentar retornar todos los gifts");
         } finally {
             cursor.close();
+            db.close();
         }
         return toReturn;
     }
 
     // READ Target
     // Devuelve el nombre dado un ID
-    public String getNameById(int idName)
-    {
+    private String getNameById(int idName){
         String toReturn = "";
         SQLiteDatabase db = getReadableDatabase();
-        String QUERY_NAME = String.format("SELECT name FROM %s WHERE %s = %d", GIFT_TABLE_NAME, "id", idName);
-        Cursor cursor = db.rawQuery(QUERY_NAME, null);
+        String QUERY_NAME = "SELECT name FROM "+TARGET_TABLE_NAME+" WHERE id = ?";
+        Cursor cursor = db.rawQuery(QUERY_NAME, new String[]{String.valueOf(idName)});
         try {
             if (cursor.moveToFirst()){
                 toReturn = cursor.getString(cursor.getColumnIndex("name"));
@@ -249,6 +243,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.d(TAG, "Error al intentar obtener un nombre por un id de target");
         } finally {
             cursor.close();
+            db.close();
         }
         return toReturn;
     }
@@ -268,7 +263,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.update(GIFT_TABLE_NAME, values, "id = ?", new String[]{String.valueOf(modifiedGift.getId())});
             db.setTransactionSuccessful();
         } catch (Exception e) {
-            Log.d(TAG, "error al intentar actualizar e");
+            Log.d(TAG, "error al intentar actualizar el regalo");
         } finally {
             db.endTransaction();
         }
@@ -281,7 +276,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try{
             ContentValues values = new ContentValues();
             values.put("idName",idTarget);
-
             db.update(GIFT_TABLE_NAME,values,"id = ?",new String[]{String.valueOf(idGift)});
             db.setTransactionSuccessful();
         }
@@ -289,6 +283,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.d(TAG,"Error al actualizar el IdName del Regalo");
         }
         finally {
+            db.endTransaction();
+        }
+    }
+
+    public void clearTables()
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try{
+            db.execSQL("delete from "+ TARGET_TABLE_NAME);
+            db.execSQL("delete from "+ GIFT_TABLE_NAME);
+        } catch (Exception e){
+            Log.d(TAG,"Error al borrar los datos de las tablas");
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public void updateGiftsPositions(ArrayList<Gift> gifts){
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try{
+            for (Gift g: gifts){
+                ContentValues values = new ContentValues();
+                values.put("x",g.getX());
+                values.put("y",g.getY());
+                db.update(GIFT_TABLE_NAME,values,"id = ?",new String[]{String.valueOf(g.getId())});
+                db.setTransactionSuccessful();
+            }
+        } catch (Exception e){
+            Log.d(TAG,"Error al actualizar las posiciones en la pantalla");
+        } finally {
             db.endTransaction();
         }
     }

@@ -8,6 +8,8 @@ import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import inc.maro.makeagift2.Activities.GiftActivity;
 import inc.maro.makeagift2.Activities.LobbyActivity;
 import inc.maro.makeagift2.Containers.Gift;
@@ -62,7 +64,6 @@ public class BehaviourService extends Service {
         {
             Log.d(TAG,"Error al agregar un nuevo target");
         }
-
     }
 
     public void updateIdTargetGift(long idGift, int idTarget)
@@ -70,8 +71,18 @@ public class BehaviourService extends Service {
         DatabaseHelper.getInstance(this).updateIdTargetGift(idGift,idTarget);
     }
 
-    public void getAllGifts(Gift thisNot, LobbyActivity activity)
+    public void drawAllGifts(ArrayList<Gift> notThisOnes, LobbyActivity activity)
     {
-        activity.drawGiftsCallBack(DatabaseHelper.getInstance(this).getAllGift(thisNot));
+        ArrayList<Gift> giftsNotDrawn = DatabaseHelper.getInstance(this).getAllGift(notThisOnes);
+        activity.drawGiftsCallBack(giftsNotDrawn);
+    }
+
+    public void clearTables()
+    {
+        DatabaseHelper.getInstance(this).clearTables();
+    }
+
+    public void updateGiftPositions(ArrayList<Gift> gifts) {
+        DatabaseHelper.getInstance(this).updateGiftsPositions(gifts);
     }
 }

@@ -13,6 +13,8 @@ public class Gift implements Parcelable
     public static final String NEW_GIFT = "newGift";
     public static final String SAVED_GIFT = "savedGift";
     public static final String EDITED_GIFT = "editedGift";
+    public static final float DEFAULT_PERCENTAGE_X = 0.20f;
+    public static final float DEFAULT_POSITION_Y = 0.30f;
 
     private String whereToBuy = "";
     private String whenToGift = ""; // todo parsear el string como Date al momento de usarlo
@@ -20,6 +22,8 @@ public class Gift implements Parcelable
     private String target = "";
     private int idTarget = -1;
     private long id = -1;
+    private float x = DEFAULT_PERCENTAGE_X;
+    private float y = DEFAULT_POSITION_Y;
 
     public Gift(){}
 
@@ -82,6 +86,22 @@ public class Gift implements Parcelable
         return id;
     }
 
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
     //Parcelable things
     @Override
     public int describeContents()
@@ -90,19 +110,19 @@ public class Gift implements Parcelable
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i)
-    {
+    public void writeToParcel(Parcel parcel, int i){
         parcel.writeStringArray(new String[] {String.valueOf(getTarget()),
                                                              getDescription(),
                                                              getWhereToBuy(),
                                                              getWhenGift(),
                                               String.valueOf(getId()),
-                                              String.valueOf(getIdTarget())});
+                                              String.valueOf(getIdTarget()),
+                                              Float.toString(getX()),
+                                              Float.toString(getY())});
     }
 
-    private Gift(Parcel input)
-    {
-        String[] data = new String[6];
+    private Gift(Parcel input){
+        String[] data = new String[8];
         input.readStringArray(data);        // the order needs to be the same as in writeToParcel() method
         setTarget(data[0]);
         setDescription(data[1]);
@@ -110,6 +130,8 @@ public class Gift implements Parcelable
         setWhenToGift(data[3]);
         setId(Integer.valueOf(data[4]));
         setIdTarget(Integer.valueOf(data[5]));
+        setX(Float.valueOf(data[6]));
+        setY(Float.valueOf(data[7]));
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
@@ -136,12 +158,13 @@ public class Gift implements Parcelable
         return false;
     }
 
-    public void updateData(Gift editedGift)
-    {
+    public void updateData(Gift editedGift){
         setTarget(editedGift.getTarget());
         setWhenToGift(editedGift.getWhenGift());
         setDescription(editedGift.getDescription());
         setWhereToBuy(editedGift.getWhereToBuy());
         setIdTarget(editedGift.getIdTarget());
+        setX(editedGift.getX());
+        setY(editedGift.getY());
     }
 }

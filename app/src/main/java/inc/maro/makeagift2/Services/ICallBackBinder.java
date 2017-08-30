@@ -14,11 +14,12 @@ import inc.maro.makeagift2.Containers.Gift;
 public interface ICallBackBinder {
 
     //que acciones lleva a cabo
-    void getAllGifts(Gift thisNot);
     void fillTargetNames(GiftActivity activity);
     void createNewGift(String target, String description, String date, String where, GiftActivity activity);
     void updateGift(Gift modifiedGift);
     void createNewTarget(Gift possibleGift, GiftActivity activity);
     void updateTarget(long idGift, int idTarget);
     void drawAllGifts(ArrayList<Gift> notThisOnes, LobbyActivity activity);
+    void clearTables(); //metodos para debug
+    void updateGiftPositions(ArrayList<Gift> gifts);
 }

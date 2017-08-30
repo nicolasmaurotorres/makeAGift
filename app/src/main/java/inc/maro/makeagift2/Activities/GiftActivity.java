@@ -147,7 +147,6 @@ public class GiftActivity extends AppCompatActivity implements Serviceable
                                 startActivity(i);
                                 service.updateGift(possibleGift);
                             }
-
                         }
                         else
                         {
@@ -269,6 +268,4 @@ public class GiftActivity extends AppCompatActivity implements Serviceable
             Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 }
