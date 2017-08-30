@@ -1,6 +1,8 @@
 package inc.maro.makeagift2.Activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PorterDuff;
@@ -63,8 +65,8 @@ public class LobbyActivity extends AppCompatActivity implements Serviceable
     public void setCallBackBinder(ICallBackBinder serv)
     {
         this.service = serv;
-     //   if (CLEAR_TABLES)
-       //     service.clearTables();
+        if (CLEAR_TABLES)
+           service.clearTables();
         service.drawAllGifts(gifts,this);
 
     }
@@ -117,12 +119,12 @@ public class LobbyActivity extends AppCompatActivity implements Serviceable
         }
     }
 
-    private void drawFab(ViewGroup contentLobby, Gift possibleGift) {
+    private void drawFab(ViewGroup contentLobby, final Gift possibleGift) {
         LayoutInflater inflater = LayoutInflater.from(this.getApplicationContext());
         FloatingActionButton fab = (FloatingActionButton) inflater.inflate(R.layout.fab_button, contentLobby, false);
         fab.setOnTouchListener(new FabOnTouchListenerListener(LobbyActivity.this, possibleGift));
-        fab.setX(ScreenSizeHelper.getInstance().getXPercentage(possibleGift.getX()));
-        fab.setY(ScreenSizeHelper.getInstance().getYPercentage(possibleGift.getY()));
+        fab.setX(ScreenSizeHelper.getInstance().getScreenXPosition(possibleGift.getX()));
+        fab.setY(ScreenSizeHelper.getInstance().getScreenYPosition(possibleGift.getY()));
         fab.setVisibility(View.VISIBLE);
         contentLobby.addView(fab); // lo agrego al ViewGroup que lo contiene
     }

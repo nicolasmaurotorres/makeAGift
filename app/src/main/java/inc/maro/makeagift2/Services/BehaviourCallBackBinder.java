@@ -17,8 +17,7 @@ public class BehaviourCallBackBinder extends Binder implements ICallBackBinder {
 
     private BehaviourService service = null;
 
-    public BehaviourCallBackBinder(BehaviourService pepe)
-    {
+    public BehaviourCallBackBinder(BehaviourService pepe){
         super();
         this.service = pepe;
     }
@@ -30,8 +29,7 @@ public class BehaviourCallBackBinder extends Binder implements ICallBackBinder {
     }
 
     @Override
-    public void createNewGift(String target, String description, String date, String where, GiftActivity activity)
-    {
+    public void createNewGift(String target, String description, String date, String where, GiftActivity activity){
         this.service.createNewGift(target,description,date,where,activity);
     }
 
@@ -42,20 +40,17 @@ public class BehaviourCallBackBinder extends Binder implements ICallBackBinder {
     }
 
     @Override
-    public void createNewTarget(Gift possibleGift, GiftActivity activity)
-    {
+    public void createNewTarget(Gift possibleGift, GiftActivity activity){
         this.service.creteNewTarget(possibleGift,activity);
     }
 
     @Override
-    public void updateTarget(long idGift, int idTarget)
-    {
+    public void updateTarget(long idGift, int idTarget){
         this.service.updateIdTargetGift(idGift, idTarget);
     }
 
     @Override
-    public void drawAllGifts(ArrayList<Gift> notThisOnes, LobbyActivity activity)
-    {
+    public void drawAllGifts(ArrayList<Gift> notThisOnes, LobbyActivity activity){
         this.service.drawAllGifts(notThisOnes,activity);
     }
 
@@ -68,5 +63,10 @@ public class BehaviourCallBackBinder extends Binder implements ICallBackBinder {
     @Override
     public void updateGiftPositions(ArrayList<Gift> gifts) {
         this.service.updateGiftPositions(gifts);
+    }
+
+    @Override
+    public void deleteGift(Gift possibleGift) {
+        this.service.deleteGift(possibleGift);
     }
 }

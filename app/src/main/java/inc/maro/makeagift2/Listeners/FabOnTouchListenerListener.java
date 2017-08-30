@@ -1,6 +1,5 @@
 package inc.maro.makeagift2.Listeners;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -9,9 +8,6 @@ import inc.maro.makeagift2.Activities.GiftActivity;
 import inc.maro.makeagift2.Activities.LobbyActivity;
 import inc.maro.makeagift2.Containers.Gift;
 import inc.maro.makeagift2.Helpers.ScreenSizeHelper;
-import inc.maro.makeagift2.Services.BehaviourService;
-import inc.maro.makeagift2.Services.ICallBackBinder;
-import inc.maro.makeagift2.Services.Serviceable;
 
 /**
  * Created by hIT on 25/8/2017.
@@ -68,8 +64,8 @@ public class FabOnTouchListenerListener implements View.OnTouchListener
                 view.setY(valueY);
                 view.setX(valueX);
                 if (theGift != null) {
-                    theGift.setX(ScreenSizeHelper.getInstance().getXDivisionPercentage(valueX)); // seteo los nuevos valores de donde esta en la pantalla en porcentaje a los limites, tanto de x como de y
-                    theGift.setY(ScreenSizeHelper.getInstance().getYDivisionPercentage(valueY));
+                    theGift.setX(ScreenSizeHelper.getInstance().getXPercentage(valueX)); // seteo los nuevos valores de donde esta en la pantalla en porcentaje a los limites, tanto de x como de y
+                    theGift.setY(ScreenSizeHelper.getInstance().getYPercentage(valueY));
                 }
                 lastAction = MotionEvent.ACTION_MOVE;
                 break;
@@ -84,9 +80,10 @@ public class FabOnTouchListenerListener implements View.OnTouchListener
                     lobbyActivity.startActivity(i);
                 }
                 break;
+
             default:
                 return false;
         }
-        return true;
+        return false;
     }
 }

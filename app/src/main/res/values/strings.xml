@@ -4,9 +4,11 @@
     <string name="title_activity_gift">GiftActivity</string>
     <string name="title_cancel_action">¿Salir sin guardar?</string>
     <string name="close_gift_activity">Cerrar Ventana</string>
-    <string name="confirm_question">¿Esta seguro de que quieres cerrar esta ventana?</string>
+    <string name="confirm_close_gift">¿Esta seguro de que quieres cerrar esta ventana?</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
     <string name="missing_target">Falta el receptor del regalo\n</string>
     <string name="missing_description">Falta la descripcion del regalo\\n</string>
+    <string name="delete_gift">Eliminar regalo</string>
+    <string name="confirm_delete_gift">¿Esta seguro de eliminar este regalo?</string>
 </resources>

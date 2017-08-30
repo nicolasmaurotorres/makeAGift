@@ -39,11 +39,11 @@ public class ScreenSizeHelper {
         return screenHeight -  getActionBarHeight()* paddingY; /*- heightView*/
     }
 
-    public float getYPercentage(float y) {
+    public float getScreenYPosition(float y) {
         return getScreenHeight() * y;
     }
 
-    public float getXPercentage(float x) {
+    public float getScreenXPosition(float x) {
         return getScreenWidth() * x;
     }
 
@@ -55,6 +55,22 @@ public class ScreenSizeHelper {
         return actionBarHeight;
     }
 
+    public void setWidthView(int widthView) {
+        this.widthView = widthView;
+    }
+
+    public void setHeightView(int heightView) {
+        this.heightView = heightView;
+    }
+
+    public float getXPercentage(float valueX) {
+        return valueX / screenWidth;
+    }
+
+    public float getYPercentage(float valueY) {
+        return valueY / screenHeight;
+    }
+
     private static void setValues(){
         actionBarHeight = 0;
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -64,21 +80,5 @@ public class ScreenSizeHelper {
         if (actionBarHeight == 0 && activity.get().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv,true)){
             actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, activity.get().getResources().getDisplayMetrics());
         }
-    }
-
-    public void setWidthView(int widthView) {
-        this.widthView = widthView;
-    }
-
-    public void setHeightView(int heightView) {
-        this.heightView = heightView;
-    }
-
-    public float getXDivisionPercentage(float valueX) {
-        return valueX / screenWidth;
-    }
-
-    public float getYDivisionPercentage(float valueY) {
-        return valueY / screenHeight;
     }
 }

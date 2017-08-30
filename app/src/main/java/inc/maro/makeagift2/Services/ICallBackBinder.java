@@ -22,4 +22,5 @@ public interface ICallBackBinder {
     void drawAllGifts(ArrayList<Gift> notThisOnes, LobbyActivity activity);
     void clearTables(); //metodos para debug
     void updateGiftPositions(ArrayList<Gift> gifts);
+    void deleteGift(Gift possibleGift);
 }

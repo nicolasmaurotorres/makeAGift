@@ -19,14 +19,12 @@ public class BehaviourServiceConnector implements ServiceConnection
     }
 
     @Override
-    public void onServiceConnected(ComponentName name, IBinder service)
-    {
+    public void onServiceConnected(ComponentName name, IBinder service){
         this.localServiceActivity.setCallBackBinder((ICallBackBinder) service);
     }
 
     @Override
-    public void onServiceDisconnected(ComponentName name)
-    {
+    public void onServiceDisconnected(ComponentName name){
         this.localServiceActivity.setCallBackBinder(null);
     }
 }

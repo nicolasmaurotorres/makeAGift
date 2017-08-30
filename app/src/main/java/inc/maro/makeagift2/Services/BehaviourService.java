@@ -85,4 +85,8 @@ public class BehaviourService extends Service {
     public void updateGiftPositions(ArrayList<Gift> gifts) {
         DatabaseHelper.getInstance(this).updateGiftsPositions(gifts);
     }
+
+    public void deleteGift(Gift possibleGift) {
+        DatabaseHelper.getInstance(this).deleteGift(possibleGift);
+    }
 }

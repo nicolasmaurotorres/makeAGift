@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class GiftActivity extends AppCompatActivity implements Serviceable
         final EditText descriptionGift = (EditText) findViewById(R.id.descriptionGiftEditView);
         final EditText dateGift = (EditText) findViewById(R.id.dateGiftEditView);
 
+        final ImageButton deleteButton = (ImageButton) findViewById(R.id.deleteButton);
         final Button cancelButton = (Button) findViewById(R.id.cancelButton);
         final Button saveButton = (Button) findViewById(R.id.saveButton);
         editedGift = false;
@@ -64,10 +66,40 @@ public class GiftActivity extends AppCompatActivity implements Serviceable
             targetGiftAutoCompleteTextView.setText(possibleGift.getTarget());
             descriptionGift.setText(possibleGift.getDescription());
             dateGift.setText(possibleGift.getWhenGift());
-            //todo ubicacion en el mapa
-            //todo posicion x,y como manejarlo
             editedGift = true;
         }
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (possibleGift != null){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(GiftActivity.this);
+                    builder.setTitle(getResources().getString(R.string.delete_gift));
+                    builder.setMessage(getResources().getString(R.string.confirm_delete_gift));
+
+                    builder.setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            service.deleteGift(possibleGift);
+
+                        }
+                    });
+
+                    builder.setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            }
+        });
+
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,7 +255,7 @@ public class GiftActivity extends AppCompatActivity implements Serviceable
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.close_gift_activity));
-        builder.setMessage(getResources().getString(R.string.confirm_question));
+        builder.setMessage(getResources().getString(R.string.confirm_close_gift));
 
         builder.setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
 
