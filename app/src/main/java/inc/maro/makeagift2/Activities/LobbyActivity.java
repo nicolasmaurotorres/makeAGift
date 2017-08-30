@@ -75,8 +75,6 @@ public class LobbyActivity extends AppCompatActivity implements Serviceable
         service.updateGiftPositions(this.gifts); //cuando se crea un nuevo gift, se llega aca, para actualizar las posicioens en la pantalla de los regalos
     }
 
-
-
     @Override
     public void connectService()
     {

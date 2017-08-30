@@ -20,8 +20,8 @@ import inc.maro.makeagift2.Services.Serviceable;
 public class FabOnTouchListenerListener implements View.OnTouchListener
 {
     private static LobbyActivity lobbyActivity;
-    private static float maxX = ScreenSizeHelper.getInstance().getScreenWidth(); // ancho de la pantalla
-    private static float maxY = ScreenSizeHelper.getInstance().getScreenHeight(); // alto de la pantalla
+    //private static float maxX = ScreenSizeHelper.getInstance().getScreenWidth(); // ancho de la pantalla
+    //private static float maxY = ScreenSizeHelper.getInstance().getScreenHeight(); // alto de la pantalla
     private float paddingY = 50f;
     private float startX;
     private float startY;
@@ -29,8 +29,6 @@ public class FabOnTouchListenerListener implements View.OnTouchListener
     private float startRawY;
     private int lastAction;
     private Gift theGift = null;
-    private float valueX = -1;
-    private float valueY = -1;
     private int viewWidth = -1;
     private int viewHeight = -1;
 
@@ -41,6 +39,8 @@ public class FabOnTouchListenerListener implements View.OnTouchListener
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+        ScreenSizeHelper.getInstance().setWidthView(viewWidth);
+        ScreenSizeHelper.getInstance().setHeightView(viewHeight);
         switch (event.getActionMasked()){
             case MotionEvent.ACTION_DOWN:
                 startX = view.getX() - event.getRawX();
@@ -56,20 +56,20 @@ public class FabOnTouchListenerListener implements View.OnTouchListener
                 viewWidth = view.getWidth();
                 viewHeight = view.getHeight();
 
-                if (valueX > maxX - view.getWidth())
-                    valueX = maxX - view.getWidth();
+                if (valueX > ScreenSizeHelper.getInstance().getScreenWidth())
+                    valueX = ScreenSizeHelper.getInstance().getScreenWidth();
                 if (valueX < 0)
                     valueX = 0;
-                if (valueY > maxY - view.getHeight() - paddingY)
-                    valueY = maxY - view.getHeight() - paddingY;
+                if (valueY > ScreenSizeHelper.getInstance().getScreenHeight())
+                    valueY = ScreenSizeHelper.getInstance().getScreenHeight();
                 if (valueY < 0)
                     valueY = 0;
 
                 view.setY(valueY);
                 view.setX(valueX);
                 if (theGift != null) {
-                    theGift.setX(valueX / (maxX - viewWidth)); // seteo los nuevos valores de donde esta en la pantalla en porcentaje a los limites, tanto de x como de y
-                    theGift.setY(valueY / (maxY - viewHeight - paddingY));
+                    theGift.setX(ScreenSizeHelper.getInstance().getXDivisionPercentage(valueX)); // seteo los nuevos valores de donde esta en la pantalla en porcentaje a los limites, tanto de x como de y
+                    theGift.setY(ScreenSizeHelper.getInstance().getYDivisionPercentage(valueY));
                 }
                 lastAction = MotionEvent.ACTION_MOVE;
                 break;
@@ -78,9 +78,7 @@ public class FabOnTouchListenerListener implements View.OnTouchListener
                 float distance = (float) Math.pow(Math.pow(event.getRawX() - startRawX, 2) + Math.pow(event.getRawY() - startRawY, 2), 2);
                 if (Math.abs(distance) < 1 && lastAction == MotionEvent.ACTION_MOVE){
                     Intent i = new Intent(lobbyActivity.getApplicationContext(), GiftActivity.class);
-                    if (theGift != null){
-                        ScreenSizeHelper.getInstance().setWidthView(viewWidth);
-                        ScreenSizeHelper.getInstance().setHeightView(viewHeight);
+                    if (theGift != null){ // lo uso para el fab de crear nuevos gifts
                         i.putExtra(Gift.SAVED_GIFT, theGift);
                     }
                     lobbyActivity.startActivity(i);

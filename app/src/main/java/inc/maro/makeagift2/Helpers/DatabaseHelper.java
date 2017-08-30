@@ -310,11 +310,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put("x",g.getX());
                 values.put("y",g.getY());
                 db.update(GIFT_TABLE_NAME,values,"id = ?",new String[]{String.valueOf(g.getId())});
-                db.setTransactionSuccessful();
             }
         } catch (Exception e){
             Log.d(TAG,"Error al actualizar las posiciones en la pantalla");
         } finally {
+            db.setTransactionSuccessful();
             db.endTransaction();
         }
     }

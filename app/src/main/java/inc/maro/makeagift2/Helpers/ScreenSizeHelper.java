@@ -17,6 +17,7 @@ public class ScreenSizeHelper {
     private static TypedValue tv = new TypedValue();
     private static ScreenSizeHelper instance = null;
     private static WeakReference<Activity> activity = null;
+    private float paddingY = 1.31f;
 
     private int widthView = -1;
     private int heightView = -1;
@@ -30,12 +31,12 @@ public class ScreenSizeHelper {
         return instance;
     }
 
-    public int getScreenWidth(){
+    public float getScreenWidth(){
         return screenWidth - widthView;
     }
 
-    public int getScreenHeight(){
-        return screenHeight - getActionBarHeight() - heightView;
+    public float getScreenHeight(){
+        return screenHeight -  getActionBarHeight()* paddingY; /*- heightView*/
     }
 
     public float getYPercentage(float y) {
@@ -71,5 +72,13 @@ public class ScreenSizeHelper {
 
     public void setHeightView(int heightView) {
         this.heightView = heightView;
+    }
+
+    public float getXDivisionPercentage(float valueX) {
+        return valueX / screenWidth;
+    }
+
+    public float getYDivisionPercentage(float valueY) {
+        return valueY / screenHeight;
     }
 }
