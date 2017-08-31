@@ -8,13 +8,14 @@ import android.os.Parcelable;
  * Created by hIT on 6/8/2017.
  */
 
-public class Gift implements Parcelable
-{
+public class Gift implements Parcelable {
     public static final String NEW_GIFT = "newGift";
     public static final String SAVED_GIFT = "savedGift";
     public static final String EDITED_GIFT = "editedGift";
+    public static final String DELETED_GIFT = "deletedGift";
     public static final float DEFAULT_PERCENTAGE_X = 0.20f;
     public static final float DEFAULT_POSITION_Y = 0.30f;
+
 
     private String whereToBuy = "";
     private String whenToGift = ""; // todo parsear el string como Date al momento de usarlo
@@ -134,8 +135,7 @@ public class Gift implements Parcelable
         setY(Float.valueOf(data[7]));
     }
 
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
-    {
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator(){
         public Gift createFromParcel(Parcel in)
         {
             return new Gift(in);
@@ -150,8 +150,7 @@ public class Gift implements Parcelable
     // al momento de buscar un gift se edito uso el equals
     @Override
     public boolean equals(Object o){
-        if (o instanceof Gift)
-        {
+        if (o instanceof Gift) {
             Gift aux = (Gift) o;
             return (aux.getId() == this.getId());
         }

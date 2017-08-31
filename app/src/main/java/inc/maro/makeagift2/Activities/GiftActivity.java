@@ -50,7 +50,6 @@ public class GiftActivity extends AppCompatActivity implements Serviceable
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         final AutoCompleteTextView targetGiftAutoCompleteTextView =  (AutoCompleteTextView) findViewById(R.id.targetAutoCompleteView);
         final EditText descriptionGift = (EditText) findViewById(R.id.descriptionGiftEditView);
         final EditText dateGift = (EditText) findViewById(R.id.dateGiftEditView);
@@ -60,8 +59,7 @@ public class GiftActivity extends AppCompatActivity implements Serviceable
         final Button saveButton = (Button) findViewById(R.id.saveButton);
         editedGift = false;
 
-        if ( getIntent().hasExtra(Gift.SAVED_GIFT) ) // siginifica que estoy editando un elemento que esta guardado
-        {
+        if ( getIntent().hasExtra(Gift.SAVED_GIFT) ){ // siginifica que estoy editando un elemento que esta guardado
             possibleGift = (Gift) getIntent().getExtras().get(Gift.SAVED_GIFT);
             targetGiftAutoCompleteTextView.setText(possibleGift.getTarget());
             descriptionGift.setText(possibleGift.getDescription());
@@ -82,6 +80,8 @@ public class GiftActivity extends AppCompatActivity implements Serviceable
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             service.deleteGift(possibleGift);
+                            Intent i = new Intent(GiftActivity.this,LobbyActivity.class);
+                            startActivity(i);
 
                         }
                     });

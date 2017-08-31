@@ -16,9 +16,6 @@ import inc.maro.makeagift2.Helpers.ScreenSizeHelper;
 public class FabOnTouchListenerListener implements View.OnTouchListener
 {
     private static LobbyActivity lobbyActivity;
-    //private static float maxX = ScreenSizeHelper.getInstance().getScreenWidth(); // ancho de la pantalla
-    //private static float maxY = ScreenSizeHelper.getInstance().getScreenHeight(); // alto de la pantalla
-    private float paddingY = 50f;
     private float startX;
     private float startY;
     private float startRawX;
@@ -84,6 +81,6 @@ public class FabOnTouchListenerListener implements View.OnTouchListener
             default:
                 return false;
         }
-        return false;
+        return true;
     }
 }

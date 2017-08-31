@@ -198,13 +198,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         String TARGETS_INSTANCES_QUERY = String.format("SELECT id,idName,description,date,coorMap,x,y FROM %s", GIFT_TABLE_NAME);
         Cursor cursor = db.rawQuery(TARGETS_INSTANCES_QUERY, null);
-        cursor.moveToFirst();
         try {
-            if (!cursor.isLast()) {
-                do {
+               while (cursor.moveToNext()){
                     Gift giftAux = new Gift();
                     giftAux.setId(cursor.getInt(cursor.getColumnIndex("id")));
-                    if (!thisNot.contains(giftAux)) {
+                    if (!thisNot.contains(giftAux)){
                         giftAux.setId(cursor.getInt(cursor.getColumnIndex("id")));
                         giftAux.setDescription(cursor.getString(cursor.getColumnIndex("description")));
                         giftAux.setWhenToGift(cursor.getString(cursor.getColumnIndex("date")));
@@ -215,9 +213,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         giftAux.setY(cursor.getFloat(cursor.getColumnIndex("y")));
                         toReturn.add(giftAux);
                     }
-                }
-                while (cursor.moveToNext());
-            }
+               }
         } catch (Exception e) {
             Log.e(TAG, "Error al intentar retornar todos los gifts");
         } finally {

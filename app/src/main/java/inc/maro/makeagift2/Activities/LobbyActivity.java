@@ -26,18 +26,15 @@ import inc.maro.makeagift2.Services.BehaviourServiceConnector;
 import inc.maro.makeagift2.Services.ICallBackBinder;
 import inc.maro.makeagift2.Services.Serviceable;
 
-public class LobbyActivity extends AppCompatActivity implements Serviceable
-{
+public class LobbyActivity extends AppCompatActivity implements Serviceable {
     private BehaviourServiceConnector behaviourServerServiceConnector = new BehaviourServiceConnector(LobbyActivity.this);
     private ICallBackBinder service = null;
     private ArrayList<Gift> gifts = new ArrayList<>();
 
-    // DATOS DE PRUEBA
-    private boolean CLEAR_TABLES = false;
+    private boolean CLEAR_TABLES = false; // OPCION DE DEBUG
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
         connectService(); // conexion con el servicio
@@ -45,6 +42,9 @@ public class LobbyActivity extends AppCompatActivity implements Serviceable
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabNewGift);
         final ViewGroup contentLobby = (ViewGroup) findViewById(R.id.coordinatorLayout);
+        fab.setOnTouchListener(new FabOnTouchListenerListener(this,null));
+        fab.setBackgroundTintMode(PorterDuff.Mode.LIGHTEN);
+
         //checkeo si tengo que agregar algun nuevo regalo
         if (getIntent().hasExtra(Gift.NEW_GIFT)){
             Gift possibleGift = (Gift) getIntent().getExtras().get(Gift.NEW_GIFT);
@@ -57,18 +57,14 @@ public class LobbyActivity extends AppCompatActivity implements Serviceable
             Gift editedGift = (Gift) getIntent().getExtras().get(Gift.EDITED_GIFT);
             gifts.get(gifts.indexOf(editedGift)).updateData(editedGift);
         }
-        fab.setOnTouchListener(new FabOnTouchListenerListener(this,null));
-        fab.setBackgroundTintMode(PorterDuff.Mode.LIGHTEN);
     }
 
     @Override
-    public void setCallBackBinder(ICallBackBinder serv)
-    {
+    public void setCallBackBinder(ICallBackBinder serv){
         this.service = serv;
         if (CLEAR_TABLES)
            service.clearTables();
         service.drawAllGifts(gifts,this);
-
     }
 
     @Override
@@ -78,28 +74,17 @@ public class LobbyActivity extends AppCompatActivity implements Serviceable
     }
 
     @Override
-    public void connectService()
-    {
+    public void connectService(){
         getApplicationContext().bindService(new Intent(LobbyActivity.this, BehaviourService.class), behaviourServerServiceConnector, Context.BIND_AUTO_CREATE);
     }
 
     @Override
-    public void showToastMessage(String message)
-    {
+    public void showToastMessage(String message){
         Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-        finish();
-        getApplicationContext().unbindService(behaviourServerServiceConnector);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig)
-    {
+    public void onConfigurationChanged(Configuration newConfig){
         super.onConfigurationChanged(newConfig);
 
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){         // Checks the orientation of the screen
@@ -108,6 +93,13 @@ public class LobbyActivity extends AppCompatActivity implements Serviceable
         else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
             Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        finish();
+        getApplicationContext().unbindService(behaviourServerServiceConnector);
     }
 
     // ********************************************************************************** CALLBACKS **********************************************************************************
