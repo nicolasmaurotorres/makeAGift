@@ -98,7 +98,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 toReturn = db.insertOrThrow(TARGET_TABLE_NAME, null, values);
                 db.setTransactionSuccessful();
             } catch (Exception e) {
-                Log.e(TAG, "Error al agregar un nuevo target");
+                Log.e(TAG, "Error al agregar un nuevo target " + e.getMessage());
             } finally {
                 db.endTransaction();
             }
@@ -128,7 +128,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             toReturn = db.insertOrThrow(GIFT_TABLE_NAME, null, values);
             db.setTransactionSuccessful();
         } catch (Exception e) {
-            Log.e(TAG, "Error al crear un nuevo regalo");
+            Log.e(TAG, "Error al crear un nuevo regalo "+ e.getMessage());
         } finally {
             db.endTransaction();
         }
@@ -155,7 +155,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            Log.e(TAG, "Error al recuperar todos los targets");
+            Log.e(TAG, "Error al recuperar todos los targets "+ e.getMessage());
         } finally {
             db.close();
             cursor.close();
@@ -182,7 +182,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 targetId = cursor.getInt(cursor.getColumnIndex("id"));
             }
         } catch (Exception e) {
-            Log.e(TAG, "Error al intentar consultar la tabla Targets");
+            Log.e(TAG, "Error al intentar consultar la tabla Targets "+ e.getMessage());
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -215,7 +215,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     }
                }
         } catch (Exception e) {
-            Log.e(TAG, "Error al intentar retornar todos los gifts");
+            Log.e(TAG, "Error al intentar retornar todos los gifts " + e.getMessage());
         } finally {
             cursor.close();
             db.close();
@@ -235,7 +235,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 toReturn = cursor.getString(cursor.getColumnIndex("name"));
             }
         } catch (Exception e){
-            Log.e(TAG, "Error al intentar obtener un nombre por un id de target");
+            Log.e(TAG, "Error al intentar obtener un nombre por un id de target "+ e.getMessage());
         } finally {
             cursor.close();
             db.close();
@@ -258,7 +258,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.update(GIFT_TABLE_NAME, values, "id = ?", new String[]{String.valueOf(modifiedGift.getId())});
             db.setTransactionSuccessful();
         } catch (Exception e) {
-            Log.e(TAG, "error al intentar actualizar el regalo");
+            Log.e(TAG, "error al intentar actualizar el regalo "+ e.getMessage());
         } finally {
             db.endTransaction();
         }
@@ -274,7 +274,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.setTransactionSuccessful();
         }
         catch (Exception e){
-            Log.e(TAG,"Error al actualizar el IdName del Regalo");
+            Log.e(TAG,"Error al actualizar el IdName del Regalo "+ e.getMessage());
         }
         finally {
             db.endTransaction();
@@ -289,7 +289,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("delete from "+ GIFT_TABLE_NAME);
             db.setTransactionSuccessful();
         } catch (Exception e){
-            Log.e(TAG,"Error al borrar los datos de las tablas");
+            Log.e(TAG,"Error al borrar los datos de las tablas "+ e.getMessage());
         } finally {
             db.endTransaction();
         }
@@ -306,7 +306,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 db.update(GIFT_TABLE_NAME,values,"id = ?",new String[]{String.valueOf(g.getId())});
             }
         } catch (Exception e){
-            Log.e(TAG,"Error al actualizar las posiciones en la pantalla");
+            Log.e(TAG,"Error al actualizar las posiciones en la pantalla "+ e.getMessage());
         } finally {
             db.setTransactionSuccessful();
             db.endTransaction();
@@ -320,7 +320,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.delete(GIFT_TABLE_NAME,"id = ?",new String[]{String.valueOf(possibleGift.getId())});
             db.setTransactionSuccessful();
         } catch (Exception e){
-            Log.e(TAG,"Error al borrar un regalo");
+            Log.e(TAG,"Error al borrar un regalo "+ e.getMessage());
         } finally {
             db.endTransaction();
             db.close();

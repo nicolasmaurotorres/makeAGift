@@ -69,7 +69,7 @@ public class FabOnTouchListenerListener implements View.OnTouchListener
 
             case MotionEvent.ACTION_UP:
                 float distance = (float) Math.pow(Math.pow(event.getRawX() - startRawX, 2) + Math.pow(event.getRawY() - startRawY, 2), 2);
-                if (Math.abs(distance) < 1 && lastAction == MotionEvent.ACTION_MOVE){
+                if (Math.abs(distance) < 1 && lastAction == MotionEvent.ACTION_DOWN){
                     Intent i = new Intent(lobbyActivity.getApplicationContext(), GiftActivity.class);
                     if (theGift != null){ // lo uso para el fab de crear nuevos gifts
                         i.putExtra(Gift.SAVED_GIFT, theGift);
