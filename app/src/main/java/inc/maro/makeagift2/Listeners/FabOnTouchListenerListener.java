@@ -1,12 +1,13 @@
 package inc.maro.makeagift2.Listeners;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import inc.maro.makeagift2.Activities.GiftActivity;
 import inc.maro.makeagift2.Activities.LobbyActivity;
-import inc.maro.makeagift2.Containers.Gift;
+import inc.maro.makeagift2.Containers.GiftDisplayed;
 import inc.maro.makeagift2.Helpers.ScreenSizeHelper;
 
 /**
@@ -21,13 +22,13 @@ public class FabOnTouchListenerListener implements View.OnTouchListener
     private float startRawX;
     private float startRawY;
     private int lastAction;
-    private Gift theGift = null;
+    private GiftDisplayed theGift = null;
     private int viewWidth = -1;
     private int viewHeight = -1;
 
-    public FabOnTouchListenerListener(LobbyActivity _lobbyActivity, Gift _gift){
-        lobbyActivity = _lobbyActivity;
-        theGift = _gift;
+    public FabOnTouchListenerListener(LobbyActivity lobbyActivity, GiftDisplayed gift){
+        this.lobbyActivity = lobbyActivity;
+        this.theGift = gift;
     }
 
     @Override
@@ -71,9 +72,7 @@ public class FabOnTouchListenerListener implements View.OnTouchListener
                 float distance = (float) Math.pow(Math.pow(event.getRawX() - startRawX, 2) + Math.pow(event.getRawY() - startRawY, 2), 2);
                 if (Math.abs(distance) < 1 && lastAction == MotionEvent.ACTION_DOWN){
                     Intent i = new Intent(lobbyActivity.getApplicationContext(), GiftActivity.class);
-                    if (theGift != null){ // lo uso para el fab de crear nuevos gifts
-                        i.putExtra(Gift.SAVED_GIFT, theGift);
-                    }
+                    i.putExtra(GiftDisplayed.GIFT_ID,theGift.getId());
                     lobbyActivity.startActivity(i);
                 }
                 break;

@@ -1,8 +1,16 @@
 package inc.maro.makeagift2.OttoBus.Events;
 
-/**
- * Created by hIT on 4/10/2017.
- */
+import inc.maro.makeagift2.Containers.Gift;
 
 public class EditGiftEvent {
+
+    private Gift gift = null;
+
+    public EditGiftEvent(Gift gift) {
+        this.gift = gift;
+    }
+
+    public Gift getGift() {
+        return gift;
+    }
 }

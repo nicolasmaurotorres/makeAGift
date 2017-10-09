@@ -13,4 +13,5 @@ public class OpenGiftEvent {
     public Gift getGift() {
         return gift;
     }
+
 }

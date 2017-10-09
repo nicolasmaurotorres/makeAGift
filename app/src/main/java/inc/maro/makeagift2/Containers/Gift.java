@@ -3,22 +3,13 @@ package inc.maro.makeagift2.Containers;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-
-/**
- * Created by hIT on 6/8/2017.
- */
-
 public class Gift implements Parcelable {
-    public static final String NEW_GIFT = "newGift";
-    public static final String SAVED_GIFT = "savedGift";
-    public static final String EDITED_GIFT = "editedGift";
-    public static final String DELETED_GIFT = "deletedGift";
+
     public static final float DEFAULT_PERCENTAGE_X = 0.20f;
     public static final float DEFAULT_POSITION_Y = 0.30f;
 
-
     private String whereToBuy = "";
-    private String whenToGift = ""; // todo parsear el string como Date al momento de usarlo
+    private String date = ""; // todo parsear el string como Date al momento de usarlo
     private String description ="";
     private String target = "";
     private int idTarget = -1;
@@ -34,11 +25,10 @@ public class Gift implements Parcelable {
         target = _target;
         description = _description;
         whereToBuy = _whereToBuy;
-        whenToGift = _whenToGift;
+        date = _whenToGift;
     }
 
-    public String getTarget()
-    {
+    public String getTarget(){
         return target;
     }
 
@@ -63,12 +53,12 @@ public class Gift implements Parcelable {
         this.whereToBuy = whereToBuy;
     }
 
-    public String getWhenGift() {
-        return whenToGift;
+    public String getDate() {
+        return date;
     }
 
-    public void setWhenToGift(String whenToGift) {
-        this.whenToGift = whenToGift;
+    public void setDate(String whenToGift) {
+        this.date = whenToGift;
     }
 
     public int getIdTarget() {
@@ -115,7 +105,7 @@ public class Gift implements Parcelable {
         parcel.writeStringArray(new String[] {String.valueOf(getTarget()),
                                                              getDescription(),
                                                              getWhereToBuy(),
-                                                             getWhenGift(),
+                                                             getDate(),
                                               String.valueOf(getId()),
                                               String.valueOf(getIdTarget()),
                                               Float.toString(getX()),
@@ -128,7 +118,7 @@ public class Gift implements Parcelable {
         setTarget(data[0]);
         setDescription(data[1]);
         setWhereToBuy(data[2]);
-        setWhenToGift(data[3]);
+        setDate(data[3]);
         setId(Integer.valueOf(data[4]));
         setIdTarget(Integer.valueOf(data[5]));
         setX(Float.valueOf(data[6]));
@@ -157,13 +147,14 @@ public class Gift implements Parcelable {
         return false;
     }
 
-    public void updateData(Gift editedGift){
+    public void copyOtherGift(Gift editedGift){
         setTarget(editedGift.getTarget());
-        setWhenToGift(editedGift.getWhenGift());
+        setDate(editedGift.getDate());
         setDescription(editedGift.getDescription());
         setWhereToBuy(editedGift.getWhereToBuy());
         setIdTarget(editedGift.getIdTarget());
         setX(editedGift.getX());
         setY(editedGift.getY());
     }
+
 }

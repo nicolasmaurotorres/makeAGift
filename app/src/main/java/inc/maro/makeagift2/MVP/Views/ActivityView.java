@@ -1,8 +1,23 @@
 package inc.maro.makeagift2.MVP.Views;
 
+import android.app.Activity;
+
+import java.lang.ref.WeakReference;
+
 /**
  * Created by hIT on 4/10/2017.
  */
 
 public class ActivityView {
+
+    private WeakReference<Activity> activityRef;
+
+    public ActivityView(Activity activity) {
+        activityRef = new WeakReference<>(activity);
+    }
+
+    public Activity getActivity(){
+        return activityRef.get();
+    }
+
 }

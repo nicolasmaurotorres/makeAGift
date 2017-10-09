@@ -18,15 +18,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--android:label="@string/title_activity_gift"-->
         <activity
             android:name=".Activities.GiftActivity"
-            android:label="@string/title_activity_gift"
             android:theme="@style/Theme.AppCompat.Dialog"/>
 
         <service
-            android:name=".Services.BehaviourService"
+            android:name=".Services.DatabaseService"
             android:enabled="true"/>
-
-    </application>
+        </application>
 
 </manifest>

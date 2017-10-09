@@ -8,5 +8,4 @@ public interface Serviceable
 {
     void setCallBackBinder(ICallBackBinder service);
     void connectService();
-    void showToastMessage(String message);
 }

@@ -7,8 +7,9 @@
     <string name="confirm_close_gift">¿Esta seguro de que quieres cerrar esta ventana?</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
-    <string name="missing_target">Falta el receptor del regalo\n</string>
-    <string name="missing_description">Falta la descripcion del regalo\\n</string>
+    <string name="missing_target">Falta el receptor del regalo \\n</string>
+    <string name="missing_description">Falta la descripcion del regalo \\n</string>
     <string name="delete_gift">Eliminar regalo</string>
     <string name="confirm_delete_gift">¿Esta seguro de eliminar este regalo?</string>
+    <string name="error_data_date">La fecha ingresada no es valida</string>
 </resources>

@@ -10,13 +10,10 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import inc.maro.makeagift2.Containers.Gift;
+import inc.maro.makeagift2.Containers.GiftDisplayed;
 import inc.maro.makeagift2.Containers.Target;
 
 import static android.content.ContentValues.TAG;
-
-/**
- * Created by hIT on 9/8/2017.
- */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "dbMakeAGift";
@@ -192,30 +189,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // READ Gifts
-    // devuelve una lista de todos los gifts en la base de datos
-    public ArrayList<Gift> getAllGift(ArrayList<Gift> thisNot){
-        ArrayList<Gift> toReturn = new ArrayList<>();
+    // devuelve una lista de todos los id de los gifts
+    public ArrayList<GiftDisplayed> getGifts(){
+        ArrayList<GiftDisplayed> toReturn = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        String TARGETS_INSTANCES_QUERY = String.format("SELECT id,idName,description,date,coorMap,x,y FROM %s", GIFT_TABLE_NAME);
+        String TARGETS_INSTANCES_QUERY = String.format("SELECT id,x,y FROM %s", GIFT_TABLE_NAME);
         Cursor cursor = db.rawQuery(TARGETS_INSTANCES_QUERY, null);
+        int id;
+        float x,y;
         try {
                while (cursor.moveToNext()){
-                    Gift giftAux = new Gift();
-                    giftAux.setId(cursor.getInt(cursor.getColumnIndex("id")));
-                    if (!thisNot.contains(giftAux)){
-                        giftAux.setId(cursor.getInt(cursor.getColumnIndex("id")));
-                        giftAux.setDescription(cursor.getString(cursor.getColumnIndex("description")));
-                        giftAux.setWhenToGift(cursor.getString(cursor.getColumnIndex("date")));
-                        giftAux.setIdTarget(cursor.getInt(cursor.getColumnIndex("idName")));
-                        giftAux.setTarget(getNameById(giftAux.getIdTarget()));
-                        giftAux.setWhereToBuy(cursor.getString(cursor.getColumnIndex("coorMap")));
-                        giftAux.setX(cursor.getFloat(cursor.getColumnIndex("x")));
-                        giftAux.setY(cursor.getFloat(cursor.getColumnIndex("y")));
-                        toReturn.add(giftAux);
-                    }
+                   id = cursor.getInt(cursor.getColumnIndex("id"));
+                   x = cursor.getFloat(cursor.getColumnIndex("x"));
+                   y = cursor.getFloat(cursor.getColumnIndex("y"));
+                   toReturn.add(new GiftDisplayed(id,x,y));
                }
         } catch (Exception e) {
             Log.e(TAG, "Error al intentar retornar todos los gifts " + e.getMessage());
+        } finally {
+            cursor.close();
+            db.close();
+        }
+        return toReturn;
+    }
+
+    private int getIdByName(String name){
+        int toReturn = -1;
+        SQLiteDatabase db = getReadableDatabase();
+        String QUERY_NAME = "SELECT id FROM "+TARGET_TABLE_NAME+" WHERE name = ?";
+        Cursor cursor = db.rawQuery(QUERY_NAME, new String[]{String.valueOf(name)});
+        try {
+            if (cursor.moveToFirst()){
+                toReturn = cursor.getInt(cursor.getColumnIndex("id"));
+            } else {
+                //el target no existe, lo creo
+                return (int) createTarget(name);
+            }
+        } catch (Exception e){
+            Log.e(TAG,"Error al intentar obtener un id por un nombre");
         } finally {
             cursor.close();
             db.close();
@@ -245,14 +256,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //siempre trabajo con cache para evitar usar la base de datos, al cerrar actualizo la base de datos
     public void updateGifts(Gift modifiedGift) {
+        int idName = getIdByName(modifiedGift.getTarget());
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
             values.put("id", modifiedGift.getId());
-            values.put("idName", modifiedGift.getIdTarget());
+            values.put("idName", idName);
             values.put("description", modifiedGift.getDescription());
-            values.put("date", modifiedGift.getWhenGift());
+            values.put("date", modifiedGift.getDate());
             values.put("coorMap", modifiedGift.getWhereToBuy());
 
             db.update(GIFT_TABLE_NAME, values, "id = ?", new String[]{String.valueOf(modifiedGift.getId())});
@@ -263,7 +275,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.endTransaction();
         }
     }
-
+    /*
     public void updateIdTargetGift(long idGift, int idTarget){
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
@@ -279,7 +291,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         finally {
             db.endTransaction();
         }
-    }
+    }*/
 
     public void clearTables(){
         SQLiteDatabase db = getWritableDatabase();
@@ -295,11 +307,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void updateGiftsPositions(ArrayList<Gift> gifts){
+    public void updateGiftsPositions(ArrayList<GiftDisplayed> gifts){
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try{
-            for (Gift g: gifts){
+            for (GiftDisplayed g: gifts){
                 ContentValues values = new ContentValues();
                 values.put("x",g.getX());
                 values.put("y",g.getY());
@@ -325,5 +337,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.endTransaction();
             db.close();
         }
+    }
+
+    public Gift getGiftById(Integer currentGift) {
+        Gift toReturn = null;
+        SQLiteDatabase db = getReadableDatabase();
+        String GIFT_BY_ID = "SELECT description, date, idName FROM "+GIFT_TABLE_NAME +" WHERE id = ?";
+        Cursor cursor = db.rawQuery(GIFT_BY_ID, new String[]{String.valueOf(currentGift.intValue())});
+        try {
+                if (cursor.moveToFirst()) {
+                    String description = cursor.getString(cursor.getColumnIndex("description"));
+                    String date = cursor.getString(cursor.getColumnIndex("date"));
+                    String nameTarget = getNameById(cursor.getInt(cursor.getColumnIndex("idName")));
+                    toReturn = new Gift(currentGift, nameTarget, description, "", date);
+                }
+        } catch (Exception e) {
+            Log.e(TAG, "Error al intentar retornar regalo por id" + e.getMessage());
+        } finally {
+            cursor.close();
+            db.close();
+        }
+        return toReturn;
     }
 }

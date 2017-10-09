@@ -9,11 +9,11 @@ import android.os.IBinder;
  * Created by hIT on 23/8/2017.
  */
 
-public class BehaviourServiceConnector implements ServiceConnection
+public class DatabaseServiceConnector implements ServiceConnection
 {
     private Serviceable localServiceActivity;
 
-    public BehaviourServiceConnector(Serviceable asd)
+    public DatabaseServiceConnector(Serviceable asd)
     {
         this.localServiceActivity = asd;
     }

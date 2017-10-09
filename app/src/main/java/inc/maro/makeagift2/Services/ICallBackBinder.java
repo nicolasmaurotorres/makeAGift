@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import inc.maro.makeagift2.Activities.GiftActivity;
 import inc.maro.makeagift2.Activities.LobbyActivity;
 import inc.maro.makeagift2.Containers.Gift;
+import inc.maro.makeagift2.Containers.GiftDisplayed;
+import inc.maro.makeagift2.MVP.Models.GiftModel;
+import inc.maro.makeagift2.MVP.Presenters.GiftPresenter;
+import inc.maro.makeagift2.MVP.Presenters.LobbyPresenter;
+import inc.maro.makeagift2.MVP.Views.GiftView;
+import inc.maro.makeagift2.MVP.Views.LobbyView;
 
 
 /**
@@ -14,13 +20,12 @@ import inc.maro.makeagift2.Containers.Gift;
 public interface ICallBackBinder {
 
     //que acciones lleva a cabo
-    void fillTargetNames(GiftActivity activity);
-    void createNewGift(String target, String description, String date, String where, GiftActivity activity);
+    void fetchTargetNames(GiftPresenter presenter);
+    void createNewGift(String target, String description, String date, String where, GiftPresenter presenter);
     void updateGift(Gift modifiedGift);
-    void createNewTarget(Gift possibleGift, GiftActivity activity);
-    void updateTarget(long idGift, int idTarget);
-    void drawAllGifts(ArrayList<Gift> notThisOnes, LobbyActivity activity);
+    void drawAllGifts(LobbyPresenter presenter);
     void clearTables(); //metodos para debug
-    void updateGiftPositions(ArrayList<Gift> gifts);
+    void updateGiftPositions(ArrayList<GiftDisplayed> gifts);
     void deleteGift(Gift possibleGift);
+    void getGiftById(Integer currentGift, GiftPresenter presenter);
 }
