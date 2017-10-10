@@ -6,22 +6,22 @@ import java.util.ArrayList;
 
 import inc.maro.makeagift2.Containers.Gift;
 import inc.maro.makeagift2.Containers.Target;
-import inc.maro.makeagift2.MVP.Models.GiftModel;
-import inc.maro.makeagift2.MVP.Views.GiftView;
+import inc.maro.makeagift2.MVP.Models.EditGiftModel;
+import inc.maro.makeagift2.MVP.Views.EditGiftView;
 import inc.maro.makeagift2.OttoBus.Events.DeleteGiftEvent;
 import inc.maro.makeagift2.OttoBus.Events.SaveEditedGift;
-import inc.maro.makeagift2.OttoBus.Events.SaveNewGiftEvent;
 import inc.maro.makeagift2.OttoBus.OttoBus;
+import inc.maro.makeagift2.Services.Bindeable;
 import inc.maro.makeagift2.Services.ICallBackBinder;
 
-public class GiftPresenter {
+public class EditGiftPresenter implements Bindeable {
 
-    private GiftView view;
-    private GiftModel model;
+    private EditGiftView view;
+    private EditGiftModel model;
 
-    public GiftPresenter(GiftModel giftModel, GiftView giftView) {
-        view = giftView;
-        model = giftModel;
+    public EditGiftPresenter(EditGiftModel editGiftModel, EditGiftView editGiftView) {
+        view = editGiftView;
+        model = editGiftModel;
     }
 
     @Subscribe
@@ -36,16 +36,6 @@ public class GiftPresenter {
             view.goToLobby();
         } else {
             view.showToastMessage("Los campos no pueden ser vacios");
-        }
-    }
-
-    @Subscribe
-    public void onSaveNewGift(SaveNewGiftEvent event){
-        String errors = view.validateDataGiftAndReturnErrors();
-        if (!errors.isEmpty()){
-            view.showToastMessage(errors);
-        } else {
-            model.addNewGift(event,this);
         }
     }
 
@@ -75,12 +65,9 @@ public class GiftPresenter {
     }
 
     // ************* CALLBACKS ***************
+    @Override
     public void _fillTargetNames(ArrayList<Target> targets) {
         view.setTargets(targets);
-    }
-
-    public void _createNewGift() {
-        view.goToLobby();
     }
 
     public void _setGift(Gift toReturn) {

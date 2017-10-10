@@ -5,59 +5,47 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import inc.maro.makeagift2.Containers.Gift;
-import inc.maro.makeagift2.Containers.GiftDisplayed;
-import inc.maro.makeagift2.MVP.Models.GiftModel;
-import inc.maro.makeagift2.MVP.Presenters.GiftPresenter;
-import inc.maro.makeagift2.MVP.Views.GiftView;
+import inc.maro.makeagift2.MVP.Models.NewGiftModel;
+import inc.maro.makeagift2.MVP.Presenters.NewGiftPresenter;
+import inc.maro.makeagift2.MVP.Views.NewGiftView;
 import inc.maro.makeagift2.R;
 import inc.maro.makeagift2.Services.DatabaseService;
 import inc.maro.makeagift2.Services.DatabaseServiceConnector;
 import inc.maro.makeagift2.Services.ICallBackBinder;
 import inc.maro.makeagift2.Services.Serviceable;
 
-public class GiftActivity extends AppCompatActivity implements Serviceable
-{
-    private DatabaseServiceConnector behaviourServerServiceConnector = new DatabaseServiceConnector(GiftActivity.this);
+public class NewGiftActivity extends AppCompatActivity implements Serviceable {
+
+    private DatabaseServiceConnector behaviourServerServiceConnector = new DatabaseServiceConnector(NewGiftActivity.this);
     private ICallBackBinder service = null;
-    private GiftPresenter presenter = null;
-    private Integer idEditedGift = null;
+    private NewGiftPresenter presenter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gift);
         connectService();
-
-        if (getIntent().hasExtra(GiftDisplayed.GIFT_ID)){
-            idEditedGift = (Integer) getIntent().getExtras().get(GiftDisplayed.GIFT_ID);
-
-        }
     }
 
     @Override
-    public void setCallBackBinder(ICallBackBinder _service){
+    public void setCallBackBinder(ICallBackBinder _service) {
         this.service = _service;
-        presenter = new GiftPresenter(new GiftModel(_service), new GiftView(this));
+        presenter = new NewGiftPresenter(new NewGiftModel(_service), new NewGiftView(this));
         presenter.register();
         presenter.bindService(_service);
         presenter.fetchTargetsNames();
-        if (idEditedGift != null){
-            presenter.setCurrentGiftById(idEditedGift);
-        }
     }
 
     @Override
-    public void connectService(){
-        getApplicationContext().bindService(new Intent(GiftActivity.this, DatabaseService.class), behaviourServerServiceConnector, Context.BIND_AUTO_CREATE);
+    public void connectService() {
+        getApplicationContext().bindService(new Intent(NewGiftActivity.this, DatabaseService.class), behaviourServerServiceConnector, Context.BIND_AUTO_CREATE);
     }
 
-   @Override
+    @Override
     public void onBackPressed(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.close_gift_activity));
@@ -68,7 +56,7 @@ public class GiftActivity extends AppCompatActivity implements Serviceable
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 finish();
-                }
+            }
         });
 
         builder.setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
@@ -81,14 +69,6 @@ public class GiftActivity extends AppCompatActivity implements Serviceable
 
         AlertDialog alert = builder.create();
         alert.show();
-    }
-
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        presenter.bindService(null);
-        getApplicationContext().unbindService(behaviourServerServiceConnector);
-        finish();
     }
 
     @Override
@@ -121,5 +101,7 @@ public class GiftActivity extends AppCompatActivity implements Serviceable
         if (service != null)
             presenter.bindService(service);
     }
+
+
 
 }

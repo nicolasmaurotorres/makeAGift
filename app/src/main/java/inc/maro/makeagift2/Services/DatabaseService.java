@@ -4,18 +4,15 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.util.ArrayList;
 
-import inc.maro.makeagift2.Activities.GiftActivity;
 import inc.maro.makeagift2.Containers.Gift;
 import inc.maro.makeagift2.Containers.GiftDisplayed;
 import inc.maro.makeagift2.Helpers.DatabaseHelper;
-import inc.maro.makeagift2.MVP.Presenters.GiftPresenter;
+import inc.maro.makeagift2.MVP.Presenters.EditGiftPresenter;
 import inc.maro.makeagift2.MVP.Presenters.LobbyPresenter;
-
-import static android.content.ContentValues.TAG;
+import inc.maro.makeagift2.MVP.Presenters.NewGiftPresenter;
 
 /**
  * Created by hIT on 23/8/2017.
@@ -36,11 +33,11 @@ public class DatabaseService extends Service {
         super.onCreate();
     }
 
-    public void fillTargetNames(GiftPresenter presenter){
+    public void fillTargetNames(Bindeable presenter){
         presenter._fillTargetNames(DatabaseHelper.getInstance(this).getTargets());
     }
 
-    public void createNewGift(String target, String description, String date, String where, GiftPresenter presenter){
+    public void createNewGift(String target, String description, String date, String where, NewGiftPresenter presenter){
         DatabaseHelper.getInstance(this).createGift(target,description,date,where);
         presenter._createNewGift();
     }
@@ -66,7 +63,7 @@ public class DatabaseService extends Service {
         DatabaseHelper.getInstance(this).deleteGift(possibleGift);
     }
 
-    public void getGiftById(Integer currentGift, GiftPresenter presenter) {
+    public void getGiftById(Integer currentGift, EditGiftPresenter presenter) {
         Gift toReturn = DatabaseHelper.getInstance(this).getGiftById(currentGift);
         presenter._setGift(toReturn);
     }

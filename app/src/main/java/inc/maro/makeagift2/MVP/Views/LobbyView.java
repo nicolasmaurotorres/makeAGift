@@ -11,8 +11,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import inc.maro.makeagift2.Activities.GiftActivity;
+import inc.maro.makeagift2.Activities.EditGiftActivity;
 import inc.maro.makeagift2.Activities.LobbyActivity;
+import inc.maro.makeagift2.Activities.NewGiftActivity;
 import inc.maro.makeagift2.Containers.GiftDisplayed;
 import inc.maro.makeagift2.Helpers.ScreenSizeHelper;
 import inc.maro.makeagift2.Listeners.FabOnTouchListenerListener;
@@ -32,7 +33,7 @@ public class LobbyView extends ActivityView{
 
     @OnClick(R.id.fabNewGift)
     public void onClickNewGift(){
-        Intent i = new Intent(getActivity().getApplicationContext(), GiftActivity.class);
+        Intent i = new Intent(getActivity().getApplicationContext(), NewGiftActivity.class);
         getActivity().startActivity(i);
     }
 

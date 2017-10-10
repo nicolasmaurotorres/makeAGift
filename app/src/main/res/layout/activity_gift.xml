@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="350dp"
-    tools:context="inc.maro.makeagift2.Activities.GiftActivity"
+    tools:context="inc.maro.makeagift2.Activities.EditGiftActivity"
     android:excludeFromRecents="true">
 
     <android.support.design.widget.AppBarLayout

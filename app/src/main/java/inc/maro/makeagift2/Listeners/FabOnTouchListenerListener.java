@@ -1,11 +1,10 @@
 package inc.maro.makeagift2.Listeners;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import inc.maro.makeagift2.Activities.GiftActivity;
+import inc.maro.makeagift2.Activities.EditGiftActivity;
 import inc.maro.makeagift2.Activities.LobbyActivity;
 import inc.maro.makeagift2.Containers.GiftDisplayed;
 import inc.maro.makeagift2.Helpers.ScreenSizeHelper;
@@ -71,7 +70,7 @@ public class FabOnTouchListenerListener implements View.OnTouchListener
             case MotionEvent.ACTION_UP:
                 float distance = (float) Math.pow(Math.pow(event.getRawX() - startRawX, 2) + Math.pow(event.getRawY() - startRawY, 2), 2);
                 if (Math.abs(distance) < 1 && lastAction == MotionEvent.ACTION_DOWN){
-                    Intent i = new Intent(lobbyActivity.getApplicationContext(), GiftActivity.class);
+                    Intent i = new Intent(lobbyActivity.getApplicationContext(), EditGiftActivity.class);
                     i.putExtra(GiftDisplayed.GIFT_ID,theGift.getId());
                     lobbyActivity.startActivity(i);
                 }

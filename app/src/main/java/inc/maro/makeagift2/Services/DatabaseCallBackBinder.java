@@ -6,8 +6,9 @@ import java.util.ArrayList;
 
 import inc.maro.makeagift2.Containers.Gift;
 import inc.maro.makeagift2.Containers.GiftDisplayed;
-import inc.maro.makeagift2.MVP.Presenters.GiftPresenter;
+import inc.maro.makeagift2.MVP.Presenters.EditGiftPresenter;
 import inc.maro.makeagift2.MVP.Presenters.LobbyPresenter;
+import inc.maro.makeagift2.MVP.Presenters.NewGiftPresenter;
 
 public class DatabaseCallBackBinder extends Binder implements ICallBackBinder {
 
@@ -19,12 +20,12 @@ public class DatabaseCallBackBinder extends Binder implements ICallBackBinder {
     }
 
     @Override
-    public void fetchTargetNames(GiftPresenter presenter){
+    public void fetchTargetNames(Bindeable presenter){
         service.fillTargetNames(presenter);
     }
 
     @Override
-    public void createNewGift(String target, String description, String date, String where, GiftPresenter presenter){
+    public void createNewGift(String target, String description, String date, String where, NewGiftPresenter presenter){
         this.service.createNewGift(target,description,date,where, presenter);
     }
 
@@ -55,7 +56,7 @@ public class DatabaseCallBackBinder extends Binder implements ICallBackBinder {
     }
 
     @Override
-    public void getGiftById(Integer currentGift, GiftPresenter presenter) {
+    public void getGiftById(Integer currentGift, EditGiftPresenter presenter) {
         this.service.getGiftById(currentGift,presenter);
     }
 }

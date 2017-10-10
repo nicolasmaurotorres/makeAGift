@@ -21,7 +21,10 @@
 
         <!--android:label="@string/title_activity_gift"-->
         <activity
-            android:name=".Activities.GiftActivity"
+            android:name=".Activities.NewGiftActivity"
+            android:theme="@style/Theme.AppCompat.Dialog"/>
+        <activity
+            android:name=".Activities.EditGiftActivity"
             android:theme="@style/Theme.AppCompat.Dialog"/>
 
         <service
